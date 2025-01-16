@@ -9,5 +9,6 @@ const authController = new AuthController(authService);
 
 route.post("/signup", authController.Signup);
 route.post("/verify", authController.Verify);
+route.post("/login", authController.Login);
 
 module.exports = route;
