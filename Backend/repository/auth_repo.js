@@ -10,9 +10,9 @@ class AuthRepository {
     }
   };
 
-  Signup = async (email, password) => {
+  Signup = async (email, password, otp) => {
     try {
-      const user = new User({ email, password });
+      const user = new User({ email, password, otp });
       await user.save();
       return user;
     } catch (error) {

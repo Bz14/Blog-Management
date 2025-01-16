@@ -9,7 +9,7 @@ const consumeEmails = async () => {
     const emailMessage = JSON.parse(msg.content.toString());
     try {
       await sendEmail(emailMessage);
-      console.log("Email sent:", emailMessage);
+      console.log("Email sent:");
       channel.ack(msg);
     } catch (error) {
       console.error("Failed to send email:", error);

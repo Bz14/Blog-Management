@@ -23,12 +23,12 @@ class AuthService {
       if (existingUser) {
         throw new Error("User already exists");
       }
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await this.authRepo.Signup(email, hashedPassword);
-
       const otp = GenerateOtp();
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = await this.authRepo.Signup(email, hashedPassword, otp);
 
       const emailMessage = VerificationEmail(email, otp);
+      console.log(emailMessage);
       channel.assertQueue("email_queue", { durable: true });
       channel.sendToQueue(
         "email_queue",
@@ -37,6 +37,7 @@ class AuthService {
       console.log("Email message sent to queue");
       return "User registered. Confirmation email sent.";
     } catch (error) {
+      console.log(error);
       throw new Error(error.message);
     }
   };
