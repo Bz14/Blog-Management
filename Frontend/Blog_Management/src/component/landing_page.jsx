@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';  
 import landingImage from '/assets/landingImage.jpg';
 
 const Landing = () => {
@@ -12,24 +13,29 @@ const Landing = () => {
         <ul className="flex space-x-6">
           <li className="hover:text-gray-400"><a href="#about">About Us</a></li>
           <li className="hover:text-gray-400"><a href="#story">Story</a></li>
-          <li className="hover:text-gray-400"><a href="#signin">Sign In</a></li>
+          <li className="hover:text-gray-400">
+            <Link to="/login">Sign In</Link> {/* Use Link here */}
+          </li>
           <li>
-            <a href="#get-started" className="bg-black text-white px-4 py-2 rounded-lg ">Get Started</a>
+            <Link to="/register" className="bg-black text-white px-4 py-2 rounded-lg">
+              Get Started
+            </Link> {/* Use Link here */}
           </li>
         </ul>
       </nav>
 
       <div className="flex flex-col items-start justify-center h-full text-left px-6">
-        <h1 className="text-7xl font-extrabold mb-4 ">Write, Share, Inspire</h1>
-        <p className="text-lg font-normal  max-w-md">
+        <h1 className="text-7xl font-extrabold mb-4">Write, Share, Inspire</h1>
+        <p className="text-lg font-normal max-w-md">
           Share your thoughts, connect with others, and make an impact.
         </p>
-        <a href="#start-reading" className="mt-6 bg-black text-white px-6 py-2 rounded-lg ">Start Reading</a>
-
+        <Link to="/register" className="mt-6 bg-black text-white px-6 py-2 rounded-lg">
+          Start Reading
+        </Link>
       </div>
 
-      <footer className="absolute bottom-0 left-0 w-full  py-2">
-        <hr className="border-gray-600"/>
+      <footer className="absolute bottom-0 left-0 w-full py-2">
+        <hr className="border-gray-600" />
         <div className="text-center text-base py-2">
           &copy; 2025 WriteWay. All rights reserved.
         </div>
