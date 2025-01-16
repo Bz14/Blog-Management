@@ -19,6 +19,15 @@ class AuthRepository {
       throw new Error(error);
     }
   };
+
+  Verify = async (email) => {
+    try {
+      await User.updateOne({ email }, { isVerified: true });
+      return "User verified";
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
 }
 
 module.exports = AuthRepository;

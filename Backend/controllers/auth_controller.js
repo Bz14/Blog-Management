@@ -12,6 +12,16 @@ class AuthController {
       res.status(400).json({ message: error.message });
     }
   };
+
+  Verify = async (req, res) => {
+    try {
+      const { email, otp } = req.body;
+      const message = await this.authService.Verify(email, otp);
+      res.status(200).json({ message: message });
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
+  };
 }
 
 module.exports = AuthController;

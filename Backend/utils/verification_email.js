@@ -4,7 +4,7 @@ const VerificationEmail = (email, otp) => {
     subject: "Verify your email",
     html: `
           <div style="font-family: Arial, sans-serif; line-height: 1.5; color: #333;">
-            <h2 style="color: #7F57C4;">Welcome to EventSphere!</h2>
+            <h2 style="color: #7F57C4;">Welcome to Blog!</h2>
             <p>Hi there,</p>
             <p>Thank you for signing up! To complete your registration, we need to verify your email address.</p>
             <p style="font-size: 1.2em; font-weight: bold; color: #7F57C4;">
