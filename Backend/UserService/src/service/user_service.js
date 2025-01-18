@@ -14,7 +14,7 @@ class AuthService {
     this.authRepo = authRepo;
   }
 
-  Signup = async (email, password) => {
+  Signup = async (name, email, password) => {
     try {
       if (!email || !password) {
         throw new Error("Email and password are required");
@@ -25,11 +25,15 @@ class AuthService {
       }
       const otp = GenerateOtp();
       const hashedPassword = await bcrypt.hash(password, 10);
-      const _ = await this.authRepo.Signup(email, hashedPassword, otp);
+      const user = await this.authRepo.Signup(name, email, hashedPassword, otp);
 
       const emailMessage = VerificationEmail(email, otp);
 
       publishMessage("email_queue", emailMessage);
+      publishMessage("notification_queue", {
+        event: "user_verified",
+        userId: user._id,
+      });
       return "User registered. Confirmation email sent.";
     } catch (error) {
       console.log(error);
@@ -53,6 +57,10 @@ class AuthService {
       }
 
       await this.authRepo.Verify(email);
+      publishMessage("notification_queue", {
+        event: "user_verified",
+        userId: user._id,
+      });
       return "User verified";
     } catch (error) {
       console.log(error);
@@ -80,6 +88,23 @@ class AuthService {
       return token;
     } catch (error) {
       console.log(error);
+      throw new Error(error.message);
+    }
+  };
+
+  GetUserProfile = async (id) => {
+    try {
+      const user = this.authRepo.GetUserById(id);
+      return user;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+  UpdateUserProfile = async (id, name, bio) => {
+    try {
+      const message = this.authRepo.UpdateUserProfile(id, name, bio);
+      return message;
+    } catch (error) {
       throw new Error(error.message);
     }
   };
