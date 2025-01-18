@@ -1,4 +1,4 @@
-const connectRabbitMQ = require("../utils/rabbitmq");
+const { initRabbitMQ, publishMessage } = require("../utils/rabbitmq");
 const bcrypt = require("bcryptjs");
 const VerificationEmail = require("../utils/verification_email");
 const GenerateOtp = require("../utils/generateOtp");
@@ -6,7 +6,7 @@ const { GenerateToken } = require("../utils/generateToken");
 
 let channel;
 (async () => {
-  channel = await connectRabbitMQ();
+  channel = await initRabbitMQ();
 })();
 
 class AuthService {
@@ -19,22 +19,17 @@ class AuthService {
       if (!email || !password) {
         throw new Error("Email and password are required");
       }
-
       const existingUser = await this.authRepo.GetUserByEmail(email);
       if (existingUser) {
         throw new Error("User already exists");
       }
       const otp = GenerateOtp();
       const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await this.authRepo.Signup(email, hashedPassword, otp);
+      const _ = await this.authRepo.Signup(email, hashedPassword, otp);
 
       const emailMessage = VerificationEmail(email, otp);
-      channel.assertQueue("email_queue", { durable: true });
-      channel.sendToQueue(
-        "email_queue",
-        Buffer.from(JSON.stringify(emailMessage))
-      );
-      console.log("Email message sent to queue");
+
+      publishMessage("email_queue", emailMessage);
       return "User registered. Confirmation email sent.";
     } catch (error) {
       console.log(error);
