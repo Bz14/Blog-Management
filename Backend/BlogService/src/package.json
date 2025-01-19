@@ -11,6 +11,8 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "authenticationservice": "file:"
+    "authenticationservice": "file:",
+    "axios": "^1.7.9",
+    "path": "^0.12.7"
   }
 }

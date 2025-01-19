@@ -1,5 +1,4 @@
 const route = require("express").Router();
-const AuthMiddleware = require("../middleware/auth_middleware");
 const upload = require("../config/multer");
 
 const BlogController = require("../controllers/blog_controller");
@@ -10,9 +9,4 @@ const blogRepo = new BlogRepo();
 const blogService = new BlogService(blogRepo);
 const blogController = new BlogController(blogService);
 
-route.post(
-  "",
-  upload.single("image"),
-  AuthMiddleware,
-  blogController.CreateBlog
-);
+route.post("/blogs", upload.single("image"), blogController.CreateBlog);
