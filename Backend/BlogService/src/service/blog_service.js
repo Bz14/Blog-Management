@@ -21,6 +21,30 @@ class BlogService {
       throw new Error(error.message);
     }
   };
+
+  GetBlogs = async (page, limit) => {
+    try {
+      return await this.blogRepo.GetBlogs(page, limit);
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
+  GetBlogById = async (id) => {
+    try {
+      return await this.blogRepo.GetBlogById(id);
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
+  GetMyBlogs = async (authorId) => {
+    try {
+      return await this.blogRepo.GetMyBlogs(authorId);
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
 }
 
 module.exports = BlogService;
