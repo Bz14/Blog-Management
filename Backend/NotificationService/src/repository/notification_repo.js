@@ -12,6 +12,7 @@ class NotificationRepo {
     });
     return await notification.save();
   };
+
   findNotificationsByUser = async (userId) => {
     return await Notification.find({ userId }).sort({ createdAt: -1 });
   };

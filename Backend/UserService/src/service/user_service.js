@@ -1,13 +1,7 @@
-const { initRabbitMQ, publishMessage } = require("../utils/rabbitmq");
 const bcrypt = require("bcryptjs");
 const VerificationEmail = require("../utils/verification_email");
 const GenerateOtp = require("../utils/generateOtp");
 const { GenerateToken } = require("../utils/generateToken");
-
-let channel;
-(async () => {
-  channel = await initRabbitMQ();
-})();
 
 class AuthService {
   constructor(authRepo) {
@@ -28,12 +22,15 @@ class AuthService {
       const user = await this.authRepo.Signup(name, email, hashedPassword, otp);
 
       const emailMessage = VerificationEmail(email, otp);
+      const notificationEvent = {
+        id: user._id,
+        type: email,
+        message: emailMessage,
+      };
 
-      publishMessage("email_queue", emailMessage);
-      publishMessage("notification_queue", {
-        event: "user_verified",
-        userId: user._id,
-      });
+      await publishMessage("notification_queue", notificationEvent);
+      console.log("Notification published:", notificationEvent);
+
       return "User registered. Confirmation email sent.";
     } catch (error) {
       console.log(error);
@@ -57,10 +54,6 @@ class AuthService {
       }
 
       await this.authRepo.Verify(email);
-      publishMessage("notification_queue", {
-        event: "user_verified",
-        userId: user._id,
-      });
       return "User verified";
     } catch (error) {
       console.log(error);

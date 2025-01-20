@@ -16,7 +16,7 @@ const schema = yup.object().shape({
     .oneOf([yup.ref("password")], "Passwords must match")
     .required("Confirm Password is required"),
 });
-
+const URL = "http:localhost:5000/api/v1/auth/signup";
 const RegisterPage = () => {
   const {
     register,
@@ -28,13 +28,10 @@ const RegisterPage = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post("/api/register", {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-      });
-      console.log("Registration successful:", response.data);
+      const response = await fetch(URL, data);
+      console.log("Registration successful:", response);
     } catch (error) {
+      console.log(error);
       console.error(
         "Error during registration:",
         error.response?.data || error.message

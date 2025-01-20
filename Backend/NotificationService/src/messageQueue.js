@@ -1,4 +1,5 @@
-const { initRabbitMQ } = require("./rabbitmq");
+const { initRabbitMQ } = require("./utils/rabbitmq");
+const sendEmail = require("./utils/email_service");
 
 const consumeNotifications = async () => {
   const channel = await initRabbitMQ();
@@ -9,9 +10,10 @@ const consumeNotifications = async () => {
     try {
       console.log("Processing notification:", notification);
       if (notification.type === "email") {
-        await sendEmail(notification.userId, notification.content);
+        await sendEmail(notification.content);
       } else if (notification.type === "push") {
-        await sendPushNotification(notification.userId, notification.content);
+        console.log("Pushed");
+        // await sendPushNotification(notification.userId, notification.content);
       }
 
       channel.ack(msg);
@@ -21,4 +23,4 @@ const consumeNotifications = async () => {
   });
 };
 
-module.exports = { consumeNotifications };
+consumeNotifications();
