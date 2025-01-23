@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
@@ -20,6 +21,7 @@ const schema = yup.object().shape({
 const URL = "http://localhost:5000/api/v1/auth/signup";
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -29,15 +31,17 @@ const RegisterPage = () => {
   });
 
   const onSubmit = async (data) => {
-    try {
-      const response = await axios.post(URL, data);
-      console.log("Registration successful:", response.data);
-    } catch (error) {
-      console.error(
-        "Error during registration:",
-        error.response?.data?.message || error.message
-      );
-    }
+    // try {
+    //   const response = await axios.post(URL, data);
+    //   console.log("Registration successful:", response.data);
+    // navigate("/verify")
+    // } catch (error) {
+    //   console.error(
+    //     "Error during registration:",
+    //     error.response?.data?.message || error.message
+    //   );
+    // }
+    navigate("/verify");
   };
 
   return (
