@@ -16,7 +16,9 @@ const schema = yup.object().shape({
     .oneOf([yup.ref("password")], "Passwords must match")
     .required("Confirm Password is required"),
 });
-const URL = "http:localhost:5000/api/v1/auth/signup";
+
+const URL = "http://localhost:5000/api/v1/auth/signup";
+
 const RegisterPage = () => {
   const {
     register,
@@ -28,13 +30,12 @@ const RegisterPage = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch(URL, data);
-      console.log("Registration successful:", response);
+      const response = await axios.post(URL, data);
+      console.log("Registration successful:", response.data);
     } catch (error) {
-      console.log(error);
       console.error(
         "Error during registration:",
-        error.response?.data || error.message
+        error.response?.data?.message || error.message
       );
     }
   };
@@ -52,7 +53,7 @@ const RegisterPage = () => {
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
                 errors.name ? "border-red-500" : ""
               }`}
-              placeholder="Enter your username"
+              placeholder="Enter your name"
             />
             {errors.name && (
               <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>

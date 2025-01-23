@@ -16,10 +16,10 @@ app.use("/api/v1", TokenMiddleware, commentRoute);
 connectDB();
 
 app.get("/", (req, res) => {
-  res.send("Welcome to the blog service");
+  res.send("Welcome to the comment service");
 });
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 4003;
 app.listen(port, () => {
   console.log("Server is running on port 5000");
 });

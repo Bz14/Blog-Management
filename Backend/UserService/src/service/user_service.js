@@ -2,6 +2,12 @@ const bcrypt = require("bcryptjs");
 const VerificationEmail = require("../utils/verification_email");
 const GenerateOtp = require("../utils/generateOtp");
 const { GenerateToken } = require("../utils/generateToken");
+const { initRabbitMQ, publishMessage } = require("../utils/rabbitmq");
+
+let channel;
+(async () => {
+  channel = await initRabbitMQ();
+})();
 
 class AuthService {
   constructor(authRepo) {
@@ -24,7 +30,7 @@ class AuthService {
       const emailMessage = VerificationEmail(email, otp);
       const notificationEvent = {
         id: user._id,
-        type: email,
+        type: "email",
         message: emailMessage,
       };
 
