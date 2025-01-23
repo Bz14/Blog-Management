@@ -31,16 +31,16 @@ const RegisterPage = () => {
   });
 
   const onSubmit = async (data) => {
-    // try {
-    //   const response = await axios.post(URL, data);
-    //   console.log("Registration successful:", response.data);
-    // navigate("/verify")
-    // } catch (error) {
-    //   console.error(
-    //     "Error during registration:",
-    //     error.response?.data?.message || error.message
-    //   );
-    // }
+    try {
+      const response = await axios.post(URL, data);
+      console.log("Registration successful:", response.data);
+      navigate("/verify");
+    } catch (error) {
+      console.error(
+        "Error during registration:",
+        error.response?.data?.message || error.message
+      );
+    }
     navigate("/verify");
   };
 

@@ -16,9 +16,11 @@ class AuthController {
   Verify = async (req, res) => {
     try {
       const { email, otp } = req.body;
+      console.log("Verify", email, otp);
       const message = await this.authService.Verify(email, otp);
       res.status(200).json({ message: message });
     } catch (error) {
+      console.log("Error", error);
       res.status(400).json({ message: error.message });
     }
   };

@@ -2,6 +2,7 @@ const axios = require("axios");
 
 const forwardRequest = async (serviceUrl, req, res) => {
   try {
+    console.log("Body", req.body);
     const response = await axios({
       method: req.method,
       url: `${serviceUrl}${req.originalUrl}`,

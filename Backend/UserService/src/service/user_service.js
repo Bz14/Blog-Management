@@ -35,7 +35,6 @@ class AuthService {
       };
 
       await publishMessage("notification_queue", notificationEvent);
-      console.log("Notification published:", notificationEvent);
 
       return "User registered. Confirmation email sent.";
     } catch (error) {

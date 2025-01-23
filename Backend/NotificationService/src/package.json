@@ -11,6 +11,13 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "authenticationservice": "file:"
+    "amqplib": "^0.10.5",
+    "authenticationservice": "file:",
+    "axios": "^1.7.9",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.5",
+    "nodemailer": "^6.10.0"
   }
 }

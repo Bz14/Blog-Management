@@ -14,7 +14,7 @@ router.post("/auth/login", (req, res) =>
   forwardRequest(userServiceUrl, req, res)
 );
 
-router.get("/auth/verify", (req, res) =>
+router.post("/auth/verify", (req, res) =>
   forwardRequest(userServiceUrl, req, res)
 );
 
