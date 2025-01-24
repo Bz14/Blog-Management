@@ -1,5 +1,9 @@
 const TokenMiddleware = (req, res, next) => {
   const authHeader = req.headers["authorization"];
+  if (!authHeader) {
+    return res.status(401).json({ message: "Authorization header is missing" });
+  }
+
   const [bearer, token] = authHeader && authHeader.split(" ");
 
   if (bearer.toLowerCase() !== "bearer") {
@@ -15,9 +19,10 @@ const TokenMiddleware = (req, res, next) => {
   }
 
   try {
-    req.token = decoded.token;
+    req.token = token;
     next();
   } catch (err) {
+    console.log(err);
     res.status(403).json({ message: "Invalid or expired token" });
   }
 };

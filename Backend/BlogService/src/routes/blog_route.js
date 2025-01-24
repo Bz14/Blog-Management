@@ -13,3 +13,5 @@ route.post("/blogs", upload.single("image"), blogController.CreateBlog);
 route.get("/blogs", blogController.GetBlogs);
 route.get("/blogs/:id", blogController.GetBlogById);
 route.get("/myblog", blogController.GetMyBlogs);
+
+module.exports = route;

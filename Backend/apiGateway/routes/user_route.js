@@ -7,7 +7,6 @@ const router = express.Router();
 const userServiceUrl = process.env.USER_SERVICE_URL;
 
 router.post("/auth/signup", (req, res) => {
-  console.log("called", userServiceUrl);
   forwardRequest(userServiceUrl, req, res);
 });
 router.post("/auth/login", (req, res) =>
