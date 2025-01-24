@@ -1,4 +1,8 @@
-const { publishMessage } = require("../utils/rabbitmq");
+const { initRabbitMQ, publishMessage } = require("../utils/rabbitmq");
+let channel;
+(async () => {
+  channel = await initRabbitMQ();
+})();
 class BlogService {
   constructor(blogRepo) {
     this.blogRepo = blogRepo;
@@ -6,12 +10,12 @@ class BlogService {
 
   CreateBlog = async (authorId, image, title, content) => {
     try {
-      const blog = this.blogRepo.CreateBlog(authorID, image, title, content);
+      const blog = this.blogRepo.CreateBlog(authorId, image, title, content);
       const notificationMessage = {
         event: "blog_created",
         data: {
           blogId: blog._id,
-          authorId: userId,
+          authorId,
           title,
         },
       };

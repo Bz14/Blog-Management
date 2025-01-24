@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const OTPVerificationPage = () => {
   const URL = "http://localhost:5000/api/v1/auth/verify";
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const email = queryParams.get("email");
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -22,7 +25,7 @@ const OTPVerificationPage = () => {
       return;
     }
     try {
-      const response = await axios.post(URL, { otp: otp });
+      const response = await axios.post(URL, { otp: otp, email: email });
       console.log("Verification successful:", response.data);
       navigate("/login");
     } catch (error) {

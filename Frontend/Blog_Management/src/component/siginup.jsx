@@ -41,7 +41,7 @@ const RegisterPage = () => {
         error.response?.data?.message || error.message
       );
     }
-    navigate("/verify");
+    navigate(`/verify?email=${data.email}`);
   };
 
   return (

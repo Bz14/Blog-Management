@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const CreateBlog = () => {
+  // const URL = "http://localhost:5000/api/v1/blogs";
+  const URL = "http://localhost:4002/api/v1/blogs";
   const [title, setTitle] = useState("");
   const [image, setImage] = useState(null);
   const [content, setContent] = useState("");
@@ -29,13 +31,15 @@ const CreateBlog = () => {
     formData.append("title", title);
     formData.append("image", image);
     formData.append("content", content);
+    console.log(title, image, content);
 
     try {
-      // Make API call to submit blog data
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/blogs",
-        formData
-      );
+      const response = await axios.post(URL, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
       console.log("Blog created successfully:", response.data);
       navigate("/blogs");
     } catch (error) {

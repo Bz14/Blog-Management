@@ -29,7 +29,7 @@ class AuthController {
     try {
       const { email, password } = req.body;
       const token = await this.authService.Login(email, password);
-      res.status(200).json({ access_token: token });
+      res.status(200).json({ accessToken: token });
     } catch (error) {
       res.status(400).json({ message: error.message });
     }

@@ -3,7 +3,7 @@ const axios = require("axios");
 const validateUserToken = async (token) => {
   try {
     const response = await axios.get(
-      "http://UserService/api/v1/auth/validate",
+      "http://localhost:4001/api/v1/auth/validate",
       {
         headers: { Authorization: `Bearer ${token}` },
       }
