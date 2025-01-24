@@ -58,6 +58,17 @@ class AuthController {
       res.status(400).json({ message: error.message });
     }
   };
+
+  GetSubscribers = async (req, res) => {
+    try {
+      const id = req.params.id;
+      const subscribers = await this.authService.GetSubscribers(id);
+      res.status(200).json({ subscribers: subscribers });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: error.message });
+    }
+  };
 }
 
 module.exports = AuthController;

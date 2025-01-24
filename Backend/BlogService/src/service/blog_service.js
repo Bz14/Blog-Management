@@ -1,4 +1,5 @@
 const { initRabbitMQ, publishMessage } = require("../utils/rabbitmq");
+const { getSubscribersForUser } = require("../utils/get_subscriber");
 let channel;
 (async () => {
   channel = await initRabbitMQ();
@@ -11,15 +12,19 @@ class BlogService {
   CreateBlog = async (authorId, image, title, content) => {
     try {
       const blog = this.blogRepo.CreateBlog(authorId, image, title, content);
-      const notificationMessage = {
+      const subscribers = await getSubscribersForUser(authorId);
+      const notifications = subscribers.map((subscriberId) => ({
         event: "blog_created",
         data: {
           blogId: blog._id,
           authorId,
           title,
+          subscriberId,
         },
-      };
-      await publishMessage("notification_queue", notificationMessage);
+      }));
+      for (const notification of notifications) {
+        await publishMessage("notification_queue", notification);
+      }
       return blog;
     } catch (error) {
       throw new Error(error.message);
