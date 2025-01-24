@@ -24,20 +24,20 @@ const LoginPage = () => {
   });
 
   const onSubmit = async (data) => {
-    // try {
-    //   const response = await axios.post(URL, data);
-    //   console.log("Login successful:", response.data);
-    //   const { accessToken } = response.data;
-    //   localStorage.setItem("accessToken", accessToken);
-    //   navigate("/blogs");
-    // } catch (error) {
-    //   console.error(
-    //     "Error during login:",
-    //     error.response?.data?.message || error.message
-    //   );
-    // }
+    try {
+      const response = await axios.post(URL, data);
+      console.log("Login successful:", response.data);
+      const { accessToken } = response.data;
+      localStorage.setItem("accessToken", accessToken);
+      navigate("/blogs");
+    } catch (error) {
+      console.error(
+        "Error during login:",
+        error.response?.data?.message || error.message
+      );
+    }
 
-    navigate("/blogs");
+    // navigate("/blogs");
   };
 
   return (

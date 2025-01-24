@@ -7,10 +7,10 @@ const consumeNotifications = async () => {
 
   channel.consume("notification_queue", async (msg) => {
     const notification = JSON.parse(msg.content.toString());
+    console.log(notification);
     try {
-      console.log("Processing notification:", notification);
       if (notification.type === "email") {
-        await sendEmail(notification.content);
+        await sendEmail(notification.message);
       } else if (notification.type === "push") {
         console.log("Pushed");
         // await sendPushNotification(notification.userId, notification.content);

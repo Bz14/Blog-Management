@@ -15,24 +15,24 @@ const OTPVerificationPage = () => {
     setError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (otp.length !== 4) {
       setError("OTP must be 4 digits.");
       return;
     }
-    // try {
-    //   const response = await axios.post(URL, otp);
-    //   console.log("Verification successful:", response.data);
-    //   navigate("/login");
-    // } catch (error) {
-    //   console.error(
-    //     "Error during registration:",
-    //     error.response?.data?.message || error.message
-    //   );
-    // }
-    navigate("/login");
-    console.log("OTP submitted:", otp);
+    try {
+      const response = await axios.post(URL, { otp: otp });
+      console.log("Verification successful:", response.data);
+      navigate("/login");
+    } catch (error) {
+      console.error(
+        "Error during registration:",
+        error.response?.data?.message || error.message
+      );
+    }
+    // navigate("/login");
+    // console.log("OTP submitted:", otp);
   };
 
   return (
