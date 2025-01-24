@@ -11,8 +11,9 @@ const consumeNotifications = async () => {
     try {
       if (notification.type === "email") {
         await sendEmail(notification.message);
-      } else if (notification.type === "push") {
+      } else if (notification.type === "blog_created") {
         console.log("Pushed");
+        await sendEmail(notification.message);
         // await sendPushNotification(notification.userId, notification.content);
       }
 

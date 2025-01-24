@@ -106,6 +106,15 @@ class AuthService {
       throw new Error(error.message);
     }
   };
+
+  GetSubscribers = async (id) => {
+    try {
+      const subscribers = this.authRepo.GetSubscribers(id);
+      return subscribers;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
 }
 
 module.exports = AuthService;

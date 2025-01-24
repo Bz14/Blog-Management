@@ -51,6 +51,15 @@ class AuthRepository {
       throw new Error(error);
     }
   };
+
+  GetSubscribers = async (id) => {
+    try {
+      const user = await User.findOne({ _id: id });
+      return user.followers;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
 }
 
 module.exports = AuthRepository;
