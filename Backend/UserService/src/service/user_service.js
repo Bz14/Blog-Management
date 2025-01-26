@@ -124,6 +124,15 @@ class AuthService {
       throw new Error(error.message);
     }
   };
+
+  SaveAuthor = async (userId, authorId) => {
+    try {
+      const message = this.authRepo.SaveAuthor(userId, authorId);
+      return message;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
 }
 
 module.exports = AuthService;

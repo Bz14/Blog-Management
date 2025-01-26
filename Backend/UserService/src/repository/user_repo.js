@@ -74,6 +74,19 @@ class AuthRepository {
       throw new Error(error);
     }
   };
+
+  SaveAuthor = async (userId, authorId) => {
+    console.log(userId, authorId);
+    try {
+      const user = await User.findOne({ _id: userId });
+      const author = await User.findOne({ _id: authorId });
+      user.blogs.push(author);
+      await user.save();
+      return "Author saved";
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
 }
 
 module.exports = AuthRepository;
