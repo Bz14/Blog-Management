@@ -75,14 +75,14 @@ class AuthRepository {
     }
   };
 
-  SaveAuthor = async (userId, authorId) => {
-    console.log(userId, authorId);
+  SaveAuthor = async (userId, blog) => {
     try {
+      console.log(userId, blog);
       const user = await User.findOne({ _id: userId });
-      const author = await User.findOne({ _id: authorId });
-      user.blogs.push(author);
+      user.blogs.push(blog);
       await user.save();
-      return "Author saved";
+      console.log(user.blogs);
+      return "Blog saved";
     } catch (error) {
       throw new Error(error);
     }
@@ -111,8 +111,16 @@ class AuthRepository {
         comment: comment,
       });
       await user.save();
-      await author.save();
-      return "Comment added successfully";
+      return user.comments;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
+  GetSavedBlogs = async (id) => {
+    try {
+      const user = await User.findOne({ _id: id });
+      return user.blogs;
     } catch (error) {
       throw new Error(error);
     }

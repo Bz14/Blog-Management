@@ -127,9 +127,9 @@ class AuthService {
     }
   };
 
-  SaveAuthor = async (userId, authorId) => {
+  SaveAuthor = async (userId, blog) => {
     try {
-      const message = this.authRepo.SaveAuthor(userId, authorId);
+      const message = this.authRepo.SaveAuthor(userId, blog);
       return message;
     } catch (error) {
       throw new Error(error.message);
@@ -167,9 +167,9 @@ class AuthService {
       );
 
       const author = await this.authRepo.GetUserById(authorId);
-      const user = await this.authRepo.GetUserById(userId);
+      const user = await this.authRepo.GetUserById(id);
 
-      const commentsMessage = CommentEmail(author.email, user.name);
+      const commentMessage = CommentEmail(author.email, user.name);
       const notificationEvent = {
         id: user._id,
         type: "email",
@@ -178,6 +178,15 @@ class AuthService {
 
       await publishMessage("notification_queue", notificationEvent);
       return message;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
+  GetSavedBlogs = async (id) => {
+    try {
+      const blogs = this.authRepo.GetSavedBlogs(id);
+      return blogs;
     } catch (error) {
       throw new Error(error.message);
     }

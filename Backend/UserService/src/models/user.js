@@ -41,14 +41,14 @@ const userSchema = new mongoose.Schema({
   ],
   blogs: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: {},
       ref: "Blogs",
     },
   ],
 
   comments: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: {},
       ref: "User",
     },
   ],

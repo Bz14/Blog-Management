@@ -83,8 +83,10 @@ const BlogDetail = () => {
   const handleSave = async () => {
     try {
       await axios.post(
-        `http://localhost:4001/api/v1/auth/save/${blog.authorId}`,
-        {},
+        `http://localhost:4001/api/v1/auth/save`,
+        {
+          blog: blog,
+        },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -121,18 +123,20 @@ const BlogDetail = () => {
   };
 
   const handleAddComment = async () => {
+    console.log(blog);
     if (!newComment.trim()) return;
     try {
       const response = await axios.post(
-        `http://localhost:4002/api/v1/blogs/${id}/comments`,
-        { text: newComment },
+        `http://localhost:4001/api/v1/auth/comment/${blog.authorId}`,
+        { comment: newComment, blogId: blog._id },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         }
       );
-      setComments([...comments, response.data.comment]);
+      setComments(response.data.message);
+      console.log(comments);
       setNewComment("");
     } catch (error) {
       console.error(
@@ -202,10 +206,10 @@ const BlogDetail = () => {
               <div>
                 {comments.map((comment, index) => (
                   <div key={index} className="border-b py-2">
-                    <p className="text-gray-800">{comment.text}</p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-gray-800">{comment.comment}</p>
+                    {/* <p className="text-sm text-gray-500">
                       - {comment.author || "Anonymous"}
-                    </p>
+                    </p> */}
                   </div>
                 ))}
               </div>

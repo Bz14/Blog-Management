@@ -84,8 +84,8 @@ class AuthController {
   SaveAuthor = async (req, res) => {
     try {
       const id = req.id;
-      const authorId = req.params.authorId;
-      const message = await this.authService.SaveAuthor(id, authorId);
+      const { blog } = req.body;
+      const message = await this.authService.SaveAuthor(id, blog);
       res.status(200).json({ message: message });
     } catch (error) {
       console.log(error);
@@ -117,6 +117,17 @@ class AuthController {
         comment
       );
       res.status(200).json({ message: message });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: error.message });
+    }
+  };
+
+  GetSavedBlogs = async (req, res) => {
+    try {
+      const id = req.id;
+      const blogs = await this.authService.GetSavedBlogs(id);
+      res.status(200).json({ blogs: blogs });
     } catch (error) {
       console.log(error);
       res.status(400).json({ message: error.message });
