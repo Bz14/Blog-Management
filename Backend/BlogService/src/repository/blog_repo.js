@@ -38,9 +38,10 @@ class BlogRepo {
 
   GetBlogById = async (id) => {
     try {
-      const blog = BlogRepo.findOne({ _id, id });
+      const blog = await Blog.findOne({ _id: id.id });
       return blog;
     } catch (error) {
+      console.log(error);
       throw new Error(error.message);
     }
   };

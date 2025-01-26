@@ -69,6 +69,17 @@ class AuthController {
       res.status(400).json({ message: error.message });
     }
   };
+
+  GetAuthor = async (req, res) => {
+    try {
+      const id = req.params.id;
+      const author = await this.authService.GetAuthor(id);
+      res.status(200).json({ author: author });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: error.message });
+    }
+  };
 }
 
 module.exports = AuthController;

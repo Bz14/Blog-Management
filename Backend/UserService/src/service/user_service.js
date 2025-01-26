@@ -115,6 +115,15 @@ class AuthService {
       throw new Error(error.message);
     }
   };
+
+  GetAuthor = async (id) => {
+    try {
+      const author = this.authRepo.GetAuthor(id);
+      return author;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
 }
 
 module.exports = AuthService;

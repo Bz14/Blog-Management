@@ -15,5 +15,6 @@ route.get("/validate", AuthMiddleware, authController.ValidateUser);
 route.get("/profile", AuthMiddleware, authController.GetUserProfile);
 route.put("/profile", AuthMiddleware, authController.UpdateUserProfile);
 route.get("/:id/subscribers", authController.GetSubscribers);
+route.get("/author/:id", authController.GetAuthor);
 
 module.exports = route;

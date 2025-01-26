@@ -60,6 +60,20 @@ class AuthRepository {
       throw new Error(error);
     }
   };
+
+  GetAuthor = async (id) => {
+    try {
+      const user = await User.findOne({ _id: id });
+      return {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        bio: user.bio,
+      };
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
 }
 
 module.exports = AuthRepository;

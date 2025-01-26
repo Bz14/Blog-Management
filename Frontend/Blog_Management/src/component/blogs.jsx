@@ -17,20 +17,28 @@ const allBlogs = [
 ];
 
 const Blogs = () => {
-  const URL = "http://localhost:5000/api/v1/blogs";
+  // const URL = "http://localhost:5000/api/v1/blogs";
+  const URL = "http://localhost:4002/api/v1/blogs";
   const navigate = useNavigate();
   const [blogs, setBlogs] = useState(allBlogs);
   useEffect(() => {
-    // try {
-    //   const response = await axios.get(URL);
-    //   const { blogs } = response.data;
-    //   setBlogs(blogs);
-    // } catch (error) {
-    //   console.error(
-    //     "Error during fetching",
-    //     error.response?.data?.message || error.message
-    //   );
-    // }
+    const fetchBlogs = async () => {
+      try {
+        const response = await axios.get(URL, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+        console.log(response.data.message.blogs);
+        setBlogs(response.data.message.blogs);
+      } catch (error) {
+        console.error(
+          "Error during fetching",
+          error.response?.data?.message || error.message
+        );
+      }
+    };
+    fetchBlogs();
   }, []);
 
   return (
@@ -60,24 +68,23 @@ const Blogs = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {blogs.map((blog) => (
             <div
-              key={blog.id}
+              key={blog._id}
               className="bg-white rounded-lg shadow-md overflow-hidden"
             >
               <img
-                src={blog.img}
+                // src={`http://localhost:4002/src/public${blog.image}`}
+                src={img}
                 alt={blog.title}
                 className="w-full h-48 object-cover"
               />
               <div className="p-4">
                 <h3 className="text-lg font-semibold text-gray-800">
+                  {console.log(`http://localhost:4002/src/public${blog.image}`)}
                   {blog.title}
                 </h3>
-                <p className="text-gray-600 mt-2">
-                  This is a short description of the blog. Click to read more.
-                </p>
                 <button
                   className="mt-4 px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition"
-                  onClick={() => navigate(`/blogs/${blog.id}`)}
+                  onClick={() => navigate(`/blogs/${blog._id}`)}
                 >
                   Read More
                 </button>

@@ -38,13 +38,14 @@ class BlogController {
     try {
       const { page = 1, limit = 10 } = req.query;
       const token = req.token;
-      const userId = ValidateUserToken(token);
+      const userId = validateUserToken(token);
       if (!userId) {
         return res.status(401).json({ error: "Invalid or expired token." });
       }
       const blogs = await this.blogService.GetBlogs(page, limit);
       res.status(200).json({ message: blogs });
     } catch (error) {
+      console.log(error);
       res.status(400).json({ message: error.message });
     }
   };
@@ -53,7 +54,7 @@ class BlogController {
     try {
       const id = req.params;
       const token = req.token;
-      const userId = ValidateUserToken(token);
+      const userId = validateUserToken(token);
       if (!userId) {
         return res.status(401).json({ error: "Invalid or expired token." });
       }

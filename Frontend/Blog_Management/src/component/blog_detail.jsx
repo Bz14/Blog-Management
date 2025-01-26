@@ -2,37 +2,61 @@ import React, { useEffect, useState } from "react";
 import img from "../assets/img.jpg";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { use } from "react";
 
 const BlogDetail = () => {
   const { id } = useParams();
-  const URL = `http://localhost:5000/api/v1/blogs/${id}`;
+  const URL = `http://localhost:4002/api/v1/blogs/${id}`;
+  // const URL = `http://localhost:5000/api/v1/blogs/${id}`;
   const navigate = useNavigate();
-  const bl = {
-    id: 1,
-    title: "The Beauty of Nature",
-    description:
-      "Nature is a beautiful and intricate tapestry of life that surrounds us. From majestic mountains to tranquil lakes, nature has a way of inspiring awe and wonder in our hearts. It's important to take time to appreciate and connect with the environment around us.",
-    author: "John Doe",
-    img: img,
-  };
 
-  const [blog, setBlog] = useState(bl);
+  const [blog, setBlog] = useState({});
 
-  //   useEffect(() => {
-  //     const fetchBlogDetails = async () => {
-  //       try {
-  //         const response = await axios.get(URL);
-  //         setBlog(response.data.blog);
-  //       } catch (error) {
-  //         console.error(
-  //           "Error fetching blog details:",
-  //           error.response?.data?.message || error.message
-  //         );
-  //       }
-  //     };
+  useEffect(() => {
+    const fetchBlogDetails = async () => {
+      try {
+        const response = await axios.get(URL, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
 
-  //     fetchBlogDetails();
-  //   }, [id]);
+        setBlog(response.data.message);
+        console.log(blog);
+      } catch (error) {
+        console.error(
+          "Error fetching blog details:",
+          error.response?.data?.message || error.message
+        );
+      }
+    };
+
+    fetchBlogDetails();
+  }, [id]);
+
+  useEffect(() => {
+    const fetchAuthor = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:4001/api/v1/auth/author/${blog.authorId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+
+        setBlog({ ...blog, author: response.data.author.name });
+        console.log(blog);
+      } catch (error) {
+        console.error(
+          "Error fetching blog details:",
+          error.response?.data?.message || error.message
+        );
+      }
+    };
+    fetchAuthor();
+  }, [blog]);
 
   const handleSave = () => {
     // Logic for saving the blog (e.g., to favorites, API call, etc.)
@@ -68,7 +92,7 @@ const BlogDetail = () => {
           {/* Image Section */}
           <div className="relative">
             <img
-              src={blog.img}
+              src={img}
               alt="Blog"
               className="w-full h-64 object-cover rounded-t-lg"
             />
@@ -79,7 +103,7 @@ const BlogDetail = () => {
             <h1 className="text-3xl font-bold text-gray-800 mb-4">
               {blog.title}
             </h1>
-            <p className="text-gray-600 text-lg mb-4">{blog.description}</p>
+            <p className="text-gray-600 text-lg mb-4">{blog.content}</p>
 
             {/* Author and Buttons */}
             <div className="flex justify-between items-center mt-6">
