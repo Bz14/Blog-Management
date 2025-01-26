@@ -133,6 +133,17 @@ class AuthController {
       res.status(400).json({ message: error.message });
     }
   };
+
+  GetComments = async (req, res) => {
+    try {
+      const id = req.id;
+      const comments = await this.authService.GetComments(id);
+      res.status(200).json({ comments: comments });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: error.message });
+    }
+  };
 }
 
 module.exports = AuthController;

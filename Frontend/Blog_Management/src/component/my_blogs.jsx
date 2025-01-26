@@ -1,84 +1,79 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import img from "../assets/img.jpg"; // Placeholder image
 
-const MyBlogs = () => {
-  // Example of user's published blogs data
-  const myBlogs = [
-    {
-      id: 1,
-      title: "Exploring the Mountains",
-      description:
-        "Mountains offer an incredible sense of adventure and tranquility. This blog explores the beauty and challenges of mountain climbing, offering tips for beginners.",
-      img: "https://images.unsplash.com/photo-1574261002370-2132d7f1c3b1",
-    },
-    {
-      id: 2,
-      title: "The Future of Artificial Intelligence",
-      description:
-        "Artificial intelligence is rapidly transforming industries. In this blog, we dive deep into the future implications of AI on various sectors.",
-      img: "https://images.unsplash.com/photo-1561948955-dabcc3c5f38b",
-    },
-    {
-      id: 3,
-      title: "Mindfulness and Mental Health",
-      description:
-        "Mindfulness is more than just a trend—it's a lifestyle that can have profound benefits on mental health. This blog explores mindfulness practices and their impacts.",
-      img: "https://images.unsplash.com/photo-1529331721167-b2078bb0e145",
-    },
-  ];
+const Saved = () => {
+  const [blogs, setBlogs] = useState([]);
+  const navigate = useNavigate();
 
-  const handleEdit = (id) => {
-    // Logic to handle blog edit (e.g., navigate to edit page)
-    alert(`Edit blog with ID: ${id}`);
-  };
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:4002/api/v1/myblog",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        setBlogs(response.data.message);
+      } catch (error) {
+        console.error(
+          "Error fetching blog details:",
+          error.response?.data?.message || error.message
+        );
+      }
+    };
 
-  const handleDelete = (id) => {
-    // Logic to handle blog deletion (e.g., API call to delete blog)
-    alert(`Delete blog with ID: ${id}`);
-  };
+    fetchBlogs();
+  }, []);
 
   return (
-    <div className="p-6 bg-white shadow-lg rounded-lg max-w-4xl mx-auto">
-      <h2 className="text-2xl font-semibold text-gray-800 mb-6">My Blogs</h2>
-      <p className="text-gray-600 mb-4">
-        Here are your published blogs. You can edit or delete them.
+    <div className="p-6 bg-gray-50 min-h-screen">
+      <h2 className="text-3xl font-bold text-gray-800 text-center mb-8">
+        Your Blogs
+      </h2>
+      <p className="text-gray-600 text-center mb-6">
+        Here are the blogs you have uploaded. Explore and revisit your
+        favorites!
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {myBlogs.map((blog) => (
-          <div
-            key={blog.id}
-            className="bg-white shadow-md rounded-lg overflow-hidden transform transition duration-300 hover:scale-105"
-          >
-            <img
-              src={blog.img}
-              alt={blog.title}
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-4">
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                {blog.title}
-              </h3>
-              <p className="text-gray-600 mb-4">{blog.description}</p>
-              <div className="flex justify-between">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {blogs && blogs.length > 0 ? (
+          blogs.map((blog) => (
+            <div
+              key={blog.id}
+              className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-xl transform transition duration-300 hover:scale-105"
+            >
+              {/* Blog Image */}
+              <img
+                src={img} // Placeholder image
+                alt={blog.title}
+                className="w-full h-48 object-cover"
+              />
+
+              {/* Blog Content */}
+              <div className="p-4 flex flex-col justify-between">
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  {blog.title}
+                </h3>
                 <button
-                  onClick={() => handleEdit(blog.id)}
-                  className="bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-400 transition"
+                  className="bg-black text-white text-sm py-2 px-4 rounded-lg hover:bg-gray-500 transition"
+                  onClick={() => navigate(`/blogs/${blog._id}`)}
                 >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(blog.id)}
-                  className="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-400 transition"
-                >
-                  Delete
+                  Read More
                 </button>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <h1>No blogs uploaded yet</h1>
+        )}
       </div>
     </div>
   );
 };
 
-export default MyBlogs;
+export default Saved;

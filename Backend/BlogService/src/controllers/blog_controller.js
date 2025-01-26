@@ -68,7 +68,7 @@ class BlogController {
   GetMyBlogs = async (req, res) => {
     try {
       const token = req.token;
-      const userId = ValidateUserToken(token);
+      const userId = await validateUserToken(token);
       if (!userId) {
         return res.status(401).json({ error: "Invalid or expired token." });
       }

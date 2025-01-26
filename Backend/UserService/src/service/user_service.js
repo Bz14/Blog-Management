@@ -191,6 +191,15 @@ class AuthService {
       throw new Error(error.message);
     }
   };
+
+  GetComments = async (id) => {
+    try {
+      const comments = this.authRepo.GetComments(id);
+      return comments;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
 }
 
 module.exports = AuthService;

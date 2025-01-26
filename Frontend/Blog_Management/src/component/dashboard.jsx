@@ -4,6 +4,7 @@ import Profile from "./profile";
 import Saved from "./saved";
 import MyBlogs from "./my_blogs";
 import Notification from "./notification";
+import Logout from "./logout";
 
 const DashBoard = () => {
   const [activeSection, setActiveSection] = useState("profile");
@@ -14,6 +15,7 @@ const DashBoard = () => {
     saved: "Saved Blogs",
     myBlogs: "My Blogs",
     notifications: "Notifications",
+    logout: "Logout",
   };
 
   const handleSidebarClick = (section) => {
@@ -63,6 +65,14 @@ const DashBoard = () => {
           >
             Notifications
           </button>
+          <button
+            onClick={() => handleSidebarClick("logout")}
+            className={`w-full text-left px-4 py-2 rounded-lg transition-all hover:bg-gray-200 ${
+              activeSection === "logout" ? "bg-black text-white" : ""
+            }`}
+          >
+            Logout
+          </button>
         </div>
       </div>
 
@@ -77,6 +87,8 @@ const DashBoard = () => {
           {activeSection === "myBlogs" && <MyBlogs />}
 
           {activeSection === "notifications" && <Notification />}
+
+          {activeSection == "logout" && <Logout />}
         </div>
       </div>
     </div>

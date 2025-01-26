@@ -1,33 +1,31 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Notification = () => {
-  // Example notification data
-  const notifications = [
-    {
-      id: 1,
-      type: "comment",
-      message: "You have a new comment on your blog 'Exploring the Mountains'.",
-      time: "2 hours ago",
-    },
-    {
-      id: 2,
-      type: "follow",
-      message: "John Doe followed you.",
-      time: "5 hours ago",
-    },
-    {
-      id: 3,
-      type: "comment",
-      message: "Your blog 'Mindfulness and Mental Health' received a comment.",
-      time: "1 day ago",
-    },
-    {
-      id: 4,
-      type: "follow",
-      message: "Jane Smith followed you.",
-      time: "3 days ago",
-    },
-  ];
+  const [notifications, setNotification] = useState([]);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:4001/api/v1/auth/comments",
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        console.log(response.data.comments);
+        setNotification(response.data.comments);
+      } catch (error) {
+        console.error(
+          "Error fetching blog details:",
+          error.response?.data?.message || error.message
+        );
+      }
+    };
+    fetchBlogs();
+  }, []);
 
   return (
     <div className="p-6 bg-white shadow-lg rounded-lg max-w-4xl mx-auto">

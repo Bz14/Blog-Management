@@ -20,5 +20,6 @@ route.post("/save", AuthMiddleware, authController.SaveAuthor);
 route.post("/follow/:authorId", AuthMiddleware, authController.FollowAuthor);
 route.post("/comment/:authorId", AuthMiddleware, authController.CommentOnBlog);
 route.get("/saved", AuthMiddleware, authController.GetSavedBlogs);
+route.get("/comments", AuthMiddleware, authController.GetComments);
 
 module.exports = route;

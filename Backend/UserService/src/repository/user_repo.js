@@ -125,6 +125,16 @@ class AuthRepository {
       throw new Error(error);
     }
   };
+
+  GetComments = async (id) => {
+    try {
+      const user = await User.findOne({ _id: id });
+      console.log(user.comments);
+      return user.comments;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
 }
 
 module.exports = AuthRepository;

@@ -49,6 +49,7 @@ class BlogRepo {
   GetMyBlogs = async (authorId) => {
     try {
       const blogs = await Blog.find({ authorId });
+      console.log(authorId, blogs);
       return blogs;
     } catch (error) {
       throw new Error(error.message);
