@@ -6,7 +6,8 @@ class CommentController {
 
   CommentOnBlog = async (req, res) => {
     try {
-      const { blogId, content } = req.body;
+      const { content } = req.body;
+      const blogId = req.params.blogId;
       if (!blogId || !content) {
         return res.status(400).json({ error: "Invalid request" });
       }
@@ -15,11 +16,7 @@ class CommentController {
       if (!userId) {
         return res.status(401).json({ error: "Invalid or expired token." });
       }
-      const result = await commentService.AddComment({
-        blogId,
-        userId,
-        content,
-      });
+      const result = await commentService.AddComment(userId, blogId, content);
 
       res
         .status(201)

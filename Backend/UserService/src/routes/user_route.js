@@ -18,5 +18,6 @@ route.get("/:id/subscribers", authController.GetSubscribers);
 route.get("/author/:id", authController.GetAuthor);
 route.post("/save/:authorId", AuthMiddleware, authController.SaveAuthor);
 route.post("/follow/:authorId", AuthMiddleware, authController.FollowAuthor);
+route.post("/comment/:authorId", AuthMiddleware, authController.CommentOnBlog);
 
 module.exports = route;

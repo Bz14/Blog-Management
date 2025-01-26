@@ -8,7 +8,7 @@ const commentRepo = new CommentRepo();
 const commentService = new CommentService(commentRepo);
 const commentController = new CommentController(commentService);
 
-route.post("/comment", commentController.CommentOnBlog);
+route.post("/comment/:blogId", commentController.CommentOnBlog);
 route.get("/comments/:blogId", commentController.GetCommentsByBlogId);
 
 module.exports = route;

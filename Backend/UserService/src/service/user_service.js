@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const VerificationEmail = require("../utils/verification_email");
 const FollowerEmail = require("../utils/follower_email");
+const CommentEmail = require("../utils/comment_email");
 const GenerateOtp = require("../utils/generateOtp");
 const { GenerateToken } = require("../utils/generateToken");
 const { initRabbitMQ, publishMessage } = require("../utils/rabbitmq");
@@ -147,6 +148,32 @@ class AuthService {
         id: user._id,
         type: "email",
         message: followMessage,
+      };
+
+      await publishMessage("notification_queue", notificationEvent);
+      return message;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
+  CommentOnBlog = async (id, authorId, blogId, comment) => {
+    try {
+      const message = this.authRepo.CommentOnBlog(
+        id,
+        authorId,
+        blogId,
+        comment
+      );
+
+      const author = await this.authRepo.GetUserById(authorId);
+      const user = await this.authRepo.GetUserById(userId);
+
+      const commentsMessage = CommentEmail(author.email, user.name);
+      const notificationEvent = {
+        id: user._id,
+        type: "email",
+        message: commentMessage,
       };
 
       await publishMessage("notification_queue", notificationEvent);

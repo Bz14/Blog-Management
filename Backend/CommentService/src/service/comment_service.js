@@ -1,24 +1,32 @@
-const { publishMessage } = require("../utils/rabbitmq");
+const { initRabbitMQ, publishMessage } = require("../utils/rabbitmq");
+const CommentEmail = require("../utils/comment_email");
+
+let channel;
+(async () => {
+  channel = await initRabbitMQ();
+})();
+
 class CommentService {
   constructor(commentRepo) {
     this.commentRepo = commentRepo;
   }
 
-  AddComment = async ({ blogId, userId, content }) => {
+  AddComment = async (userId, blogId, content) => {
     try {
-      const comment = await this.commentRepo.AddComment({
-        blogId,
+      const comment = await this.commentRepo.AddComment(
         userId,
-        content,
-      });
-      const notificationPayload = {
-        type: "NEW_COMMENT",
         blogId,
-        userId,
-        content,
+        content
+      );
+
+      const commentMessage = CommentEmail(email, otp);
+      const notificationEvent = {
+        id: user._id,
+        type: "email",
+        message: emailMessage,
       };
 
-      await publishMessage("notification_queue", notificationPayload);
+      await publishMessage("notification_queue", notificationEvent);
       return comment;
     } catch (error) {
       console.error("Error adding comment:", error);

@@ -88,7 +88,6 @@ class AuthRepository {
     }
   };
   FollowAuthor = async (userId, authorId) => {
-    console.log(userId, authorId);
     try {
       const user = await User.findOne({ _id: userId });
       const author = await User.findOne({ _id: authorId });
@@ -97,6 +96,23 @@ class AuthRepository {
       await user.save();
       await author.save();
       return "You followed the author";
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
+  CommentOnBlog = async (id, authorId, blogId, comment) => {
+    try {
+      const user = await User.findOne({ _id: authorId });
+      user.comments.push({
+        id: id,
+        blogId,
+        blogId,
+        comment: comment,
+      });
+      await user.save();
+      await author.save();
+      return "Comment added successfully";
     } catch (error) {
       throw new Error(error);
     }
