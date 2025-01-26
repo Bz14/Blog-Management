@@ -100,8 +100,24 @@ const BlogDetail = () => {
     }
   };
 
-  const handleFollow = () => {
-    alert(`You followed ${blog.author}!`);
+  const handleFollow = async () => {
+    try {
+      await axios.post(
+        `http://localhost:4001/api/v1/auth/follow/${blog.authorId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      alert(`You followed ${blog.author}!`);
+    } catch (error) {
+      console.error(
+        "Error saving blog:",
+        error.response?.data?.message || error.message
+      );
+    }
   };
 
   const handleAddComment = async () => {

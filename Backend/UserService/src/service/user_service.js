@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const VerificationEmail = require("../utils/verification_email");
+const FollowerEmail = require("../utils/follower_email");
 const GenerateOtp = require("../utils/generateOtp");
 const { GenerateToken } = require("../utils/generateToken");
 const { initRabbitMQ, publishMessage } = require("../utils/rabbitmq");
@@ -128,6 +129,27 @@ class AuthService {
   SaveAuthor = async (userId, authorId) => {
     try {
       const message = this.authRepo.SaveAuthor(userId, authorId);
+      return message;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
+  FollowAuthor = async (userId, authorId) => {
+    try {
+      const message = this.authRepo.FollowAuthor(userId, authorId);
+
+      const author = await this.authRepo.GetUserById(authorId);
+      const user = await this.authRepo.GetUserById(userId);
+
+      const followMessage = FollowerEmail(author.email, user.name);
+      const notificationEvent = {
+        id: user._id,
+        type: "email",
+        message: followMessage,
+      };
+
+      await publishMessage("notification_queue", notificationEvent);
       return message;
     } catch (error) {
       throw new Error(error.message);

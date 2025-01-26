@@ -87,6 +87,20 @@ class AuthRepository {
       throw new Error(error);
     }
   };
+  FollowAuthor = async (userId, authorId) => {
+    console.log(userId, authorId);
+    try {
+      const user = await User.findOne({ _id: userId });
+      const author = await User.findOne({ _id: authorId });
+      user.following.push(author._id);
+      author.followers.push(user._id);
+      await user.save();
+      await author.save();
+      return "You followed the author";
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
 }
 
 module.exports = AuthRepository;
